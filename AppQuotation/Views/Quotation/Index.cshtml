@@ -1,0 +1,14 @@
+﻿@model IEnumerable<AppQuotation.Models.Quotation>
+@{
+    ViewBag.Title = "Все Котировки";
+}
+
+
+
+<table class="table">
+    <tr><td>Название</td><td>Тикер</td><td>Цена</td><td>Дата</td><td>Источник</td></tr>
+    @foreach (var item in Model)
+    {
+        <tr><td>@item.Company.Name</td><td>@item.Company.Ticker</td><td>@item.Price</td><td>@item.Date</td><td>@item.Source.Name</td></tr>
+    }
+</table>

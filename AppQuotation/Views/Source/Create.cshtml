@@ -1,0 +1,17 @@
+﻿@model AppQuotation.Models.Source
+@{
+    ViewBag.Title = "Добавление источника";
+}
+<form asp-action="create" asp-controller="Source">
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">Название</label>
+        <input type="text" asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="BaseApiUrl" class="control-label">Url адрес</label>
+        <input type="text" asp-for="BaseApiUrl" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Отправить" class="btn btn-default" />
+    </div>
+</form>

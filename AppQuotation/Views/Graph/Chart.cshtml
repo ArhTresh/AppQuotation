@@ -1,0 +1,18 @@
+﻿@model IEnumerable<AppQuotation.Models.Quotation>
+@{
+    ViewBag.Title = "График";
+}
+
+<div>
+    
+@foreach (var item in Model.GroupBy(x => x.Source))
+{
+    <h1>@item.Key.Name</h1>
+    @foreach (var item2 in item.GroupBy(x=>x.Company))
+    {
+        <a class="nav-link text-dark" asp-area="" asp-controller="Graph" asp-action="selectCompany">
+            @Html.ActionLink(item2.Key.Name, "selectCompany", new { idCompany = item2.Key.Id, idSource = item.Key.Id })
+        </a>
+    }
+}
+</div>
