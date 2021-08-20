@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,10 +10,15 @@ namespace AppQuotation.Models
 {
     public class ApplicationContext : DbContext
     {
-
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=AppQuotationDB;Trusted_Connection=True;");
+
+            string json = System.IO.File.ReadAllText("appsettings.json");
+            dynamic jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+            string connection = jsonObj["ConnectionStrings"]["DefaultConnection"];
+
+            optionsBuilder.UseSqlServer(connection);
         }
 
 
@@ -40,15 +47,19 @@ namespace AppQuotation.Models
             string userRoleName = "user";
 
             string adminEmail = "admin@mail.ru";
-            string adminPassword = "12345";
+            string adminPassword = "admin";
+
+            string userEmail = "admin@mail.ru";
+            string userPassword = "user";
 
             // добавляем роли
             Role adminRole = new Role { Id = 1, Name = adminRoleName };
             Role userRole = new Role { Id = 2, Name = userRoleName };
             User adminUser = new User { Id = 1, Email = adminEmail, Password = adminPassword, RoleId = adminRole.Id };
+            User userUser = new User { Id = 2, Email = userEmail, Password = userPassword, RoleId = userRole.Id };
 
             modelBuilder.Entity<Role>().HasData(new Role[] { adminRole, userRole });
-            modelBuilder.Entity<User>().HasData(new User[] { adminUser });
+            modelBuilder.Entity<User>().HasData(new User[] { adminUser, userUser });
 
             string companyNameSber = "Sberbank";
             string companyTickerSber = "SBER";

@@ -29,12 +29,10 @@ namespace AppQuotation
                 services.AddQuartz(async q =>
                 {
 
-                    //var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json");
 
-                    //var appConfiguration = builder.Build();
-
-                    //int period = int.Parse(appConfiguration["Quartz:QuotationJob"]);
-
+                    string json = System.IO.File.ReadAllText("appsettings.json");
+                    dynamic jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+                    int period = jsonObj["Quartz"]["QuotationJob"];
 
 
                     StdSchedulerFactory factory = new StdSchedulerFactory();
@@ -53,7 +51,7 @@ namespace AppQuotation
                         .WithIdentity("trigger1", "group1")
                         .StartNow()
                         .WithSimpleSchedule(x => x
-                            .WithIntervalInSeconds(20)
+                            .WithIntervalInSeconds(period)
                             .RepeatForever())
                         .Build();
 
